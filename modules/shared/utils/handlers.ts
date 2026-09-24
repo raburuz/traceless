@@ -27,7 +27,8 @@ export function safeHandler<TArgs extends unknown[]>(
         )
       }
 
-      console.log(error);
+      // Never log the raw error: it may carry request data (prompt, images, keys).
+      console.log(error instanceof Error ? `${error.name}: ${error.message}` : 'Unknown error');
       return NextResponse.json(
         {
           message: "Internal server error",

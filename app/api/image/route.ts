@@ -115,8 +115,9 @@ export const POST = safeHandler(
       }
       
       if(APICallError.isInstance(error)){
-        console.log(error);
         const code = (error.data as any)?.error?.code;
+        // Log only metadata: the full error carries the request body (prompt, images).
+        console.log('APICallError', error.statusCode, code, error.message);
 
         return NextResponse.json(
           {
@@ -129,7 +130,7 @@ export const POST = safeHandler(
         ) 
       }
 
-      console.log(error);
+      // Logged by safeHandler.
       throw error;
       
     }

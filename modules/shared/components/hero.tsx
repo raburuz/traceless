@@ -21,9 +21,9 @@ const pillars = [
   },
   {
     icon: ShieldCheck,
-    title: "Straight to the provider",
+    title: "Nothing kept on the way",
     description:
-      "Your browser talks to OpenAI or Google. Nobody in the middle.",
+      "Your request is relayed to OpenAI or Google and that's it. Your key, prompt and images are never stored.",
   },
 ]
 
