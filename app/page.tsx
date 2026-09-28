@@ -11,7 +11,7 @@ import { ImageResult } from "@/modules/images/components/image-result";
 export default function Home() {
   return (
     <>
-      <AdStrip position="top"/>
+      {/* <AdStrip position="top"/> */}
       <div className="relative md:px-44 xl:px-56">
         {/* Header */}
         <header className="sticky top-22 md:top-10 z-10 mt-2 md:mt-0 mx-3 md:mx-10 flex items-center justify-between">
@@ -33,7 +33,7 @@ export default function Home() {
         </main>
         <Footer/>
       </div>
-      <AdStrip position="bottom"/>
+     {/*  <AdStrip position="bottom"/> */}
     </>
   );
 }
