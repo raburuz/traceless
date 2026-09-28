@@ -8,8 +8,13 @@ const DEFAULT_COMPRESSION_OPTIONS = {
   initialQuality: 0.85,
 } satisfies Options;
 
-export const compressImage = (file: File, options?: Options) => {
-  return imageCompression(file, options ?? DEFAULT_COMPRESSION_OPTIONS);
+// browser-image-compression resolves a Blob with `name` patched on, not a real
+// File, so it fails `z.instanceof(File)`. Wrap it back into a File.
+export const compressImage = async (file: File, options?: Options) => {
+  const blob = await imageCompression(file, options ?? DEFAULT_COMPRESSION_OPTIONS);
+  const extension = blob.type.split("/")[1];
+  const name = extension ? file.name.replace(/\.[^.]+$/, "") + `.${extension}` : file.name;
+  return new File([blob], name, { type: blob.type, lastModified: file.lastModified });
 };
 
 export const uploadImages = (): Promise<File[]> => {

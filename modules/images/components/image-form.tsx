@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, FieldErrors, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -79,6 +80,13 @@ export const ImageForm = () => {
     generate(values);
   };
 
+  const onInvalid = (errors: FieldErrors<ImageFormValues | ImageSchema>) => {
+    const imageErrors = errors.inputImages;
+    const message = imageErrors?.message
+      ?? (Array.isArray(imageErrors) ? imageErrors.find(Boolean)?.message : undefined);
+    if (message) toast.error(message);
+  };
+
   return (
     <>
       <ImagePreview 
@@ -86,7 +94,7 @@ export const ImageForm = () => {
         onRemove={upload.handleRemove}/>
 
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
         onDragOver={upload.handleDragOver}
         onDragLeave={upload.handleDragLeave}
         onDrop={upload.handleDrop}

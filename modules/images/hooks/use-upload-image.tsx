@@ -1,5 +1,5 @@
 import { DragEvent, useState } from "react";
-import { uploadImages } from "@/modules/images/utils/images";
+import { compressImage, uploadImages } from "@/modules/images/utils/images";
 
 export const useUploadImage = (
   props: {
@@ -11,8 +11,11 @@ export const useUploadImage = (
 
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
+  // Compressed on selection so the form validates (and previews) what will be sent.
+  const compressImages = ( files: File[] ) => Promise.all(files.map((file) => compressImage(file)));
+
   const handleUpload = async () => {
-    const images = await uploadImages();
+    const images = await compressImages(await uploadImages());
     if (images.length) {
       props.onChange(images.slice(0, props.maxImages));
     }
@@ -45,7 +48,8 @@ export const useUploadImage = (
     );
     if (!files.length) return;
 
-    props.onChange([...props.images, ...files].slice(0, props.maxImages));
+    const images = await compressImages(files);
+    props.onChange([...props.images, ...images].slice(0, props.maxImages));
   };
 
   return {

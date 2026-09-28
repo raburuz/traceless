@@ -1,6 +1,5 @@
 import { ImageSchema } from "@/modules/images/utils/ai-models"
 import { toast } from "sonner";
-import { compressImage } from "@/modules/images/utils/images";
 import { useImageStore } from "@/modules/images/store";
 
 export const useImageApi = () => {
@@ -55,16 +54,9 @@ export const useImage = () => {
   ) => {
     try {
 
-      const inputImages = await Promise.all(
-        props.data.inputImages.map( v => compressImage(v) )
-      );
-
       const data: { image: Base64URLString } = await api.generateImage(
         props.apiKey,
-        {
-          ...props.data, 
-          inputImages
-        }
+        props.data,
       );
 
       setImage({
